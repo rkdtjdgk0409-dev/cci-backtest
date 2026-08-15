@@ -5,3 +5,4 @@ finance-datareader>=0.9.96
 pykrx>=1.0.48
 requests>=2.31
 lxml>=5.0
+beautifulsoup4>=4.12
