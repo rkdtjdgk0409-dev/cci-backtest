@@ -129,3 +129,28 @@ python kospi200_cci9_dmi14_psar_backtest_visual.py \
 
 이 버전은 기존 CCI 백테스트의 매매조건을 변경하지 않고
 결과 분석/시각화 기능만 추가한 버전입니다.
+
+## GitHub Actions KRX 오류 대응
+
+GitHub-hosted runner에서 KRX/pykrx 요청이 차단되거나 응답 형식이 바뀌어
+`KRX 로그인 실패`, `KeyError: '시장'` 같은 오류가 발생할 수 있습니다.
+
+이 버전은 KOSPI200 구성종목을 다음 순서로 자동 조회합니다.
+
+1. Naver Finance
+2. pykrx / KRX
+3. Hankyung fallback
+
+따라서 pykrx가 GitHub Actions에서 실패해도 다음 데이터 소스로 자동 전환합니다.
+
+## 가격 데이터 fallback 보강
+
+이 버전은 종목별 가격 데이터를 아래 순서로 불러옵니다.
+
+1. FinanceDataReader
+2. yfinance `.KS`
+3. yfinance `.KQ`
+
+또한 모든 종목 데이터 수집이 실패하면 빈 CSV를 정상 결과처럼 남기지 않고
+workflow를 실패 처리합니다. 대신 `failures.csv`에 각 종목별 오류 원인을 저장하며,
+GitHub Actions의 artifact는 실패 시에도 업로드됩니다.
